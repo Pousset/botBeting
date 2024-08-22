@@ -39,4 +39,28 @@ client.on('messageCreate', async message => {
     }
 });
 
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isButton()) return;
+
+    const { customId } = interaction;
+
+    switch (customId) {
+        case 'createBet':
+            interaction.reply('Commande !bet exécutée.');
+            break;
+        case 'joinBet':
+            interaction.reply('Commande !joinbet exécutée.');
+            break;
+        case 'endBet':
+            interaction.reply('Commande !endbet exécutée.');
+            break;
+        case 'showBet':
+            interaction.reply('Commande !showbet exécutée.');
+            break;
+        default:
+            interaction.reply('Action non reconnue.');
+            break;
+    }
+});
+
 client.login(process.env.TOKEN);
