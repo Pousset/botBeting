@@ -44,6 +44,7 @@ function endBet(betId, actualScore1, actualScore2) {
     return null;
 }
 
+
 function calculatePoints(prediction, actualScore1, actualScore2) {
     let points = 0;
     // Points pour avoir prédit la bonne équipe gagnante

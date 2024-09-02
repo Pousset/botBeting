@@ -41,26 +41,35 @@ client.on('messageCreate', async message => {
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isButton()) return;
-
-    const { customId } = interaction;
-
+  
+    const { customId, user, message } = interaction;
+    
+    // Récupérer l'ID du pari à partir du contenu du message (assurez-vous qu'il est structuré de manière à être facilement récupéré)
+    const betId = parseInt(message.embeds[0].description.split(':')[1]);
+  
     switch (customId) {
-        case 'createBet':
-            interaction.reply('Commande !bet exécutée.');
-            break;
-        case 'joinBet':
-            interaction.reply('Commande !joinbet exécutée.');
-            break;
-        case 'endBet':
-            interaction.reply('Commande !endbet exécutée.');
-            break;
-        case 'showBet':
-            interaction.reply('Commande !showbet exécutée.');
-            break;
-        default:
-            interaction.reply('Action non reconnue.');
-            break;
+      case 'win':
+        addUserPrediction(betId, user.id, 'win', 0, 0); // Ajouter la prédiction de l'utilisateur
+        await interaction.reply({ content: 'Vous avez choisi: Win (W)', ephemeral: true });
+        break;
+      case 'lose':
+        addUserPrediction(betId, user.id, 'lose', 0, 0);
+        await interaction.reply({ content: 'Vous avez choisi: Lose (L)', ephemeral: true });
+        break;
+      case 'draw':
+        addUserPrediction(betId, user.id, 'draw', 0, 0);
+        await interaction.reply({ content: 'Vous avez choisi: Draw (N)', ephemeral: true });
+        break;
+      case 'lock':
+        await interaction.reply({ content: 'Les paris sont verrouillés pour ce pari.', ephemeral: true });
+        break;
+      default:
+        await interaction.reply({ content: 'Action non reconnue.', ephemeral: true });
+        break;
     }
-});
+  });
+
+  
+  
 
 client.login(process.env.TOKEN);
